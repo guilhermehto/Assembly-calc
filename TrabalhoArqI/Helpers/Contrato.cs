@@ -9,6 +9,7 @@ namespace TrabalhoArqI.Helpers {
     /// Usada para definir o nome de registradores utilizados pelo programa assembly
     /// </summary>
     public static class Contrato {
-        public const string Resultado = "$v0";
+        public const string Resultado = "$a0";
+        public const string ResultadoMultiplicacao = "$a1";
     }
 }

@@ -65,5 +65,24 @@ namespace TrabalhoArqI.Helpers {
 
             return nums.Where(x => x != null).ToArray();
         }
+        public string[] IdentificarSubtracao(string[] calculo) {
+            string[] nums = new string[calculo.Length];
+            int posNums = 0;
+            for (int i = 0; i < calculo.Length; i++) {
+                if (calculo[i] == "-") {
+                    if (posNums != 0) {
+                        nums[posNums] = calculo[i + 1];
+                        posNums++;
+                    }
+                    else {
+                        nums[posNums] = calculo[i - 1];
+                        nums[posNums + 1] = calculo[i + 1];
+                        posNums += 2;
+                    }
+                }
+            }
+
+            return nums.Where(x => x != null).ToArray();
+        }
     }
 }
