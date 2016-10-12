@@ -84,5 +84,78 @@ namespace TrabalhoArqI.Helpers {
 
             return nums.Where(x => x != null).ToArray();
         }
+
+
+
+        public void GerarCodigo(string[] operandos, Arquivo arquivo) {
+            /*
+             * 10 + 5 + 2 + 1
+             * 5 + 2 + 1
+             * 2 + 1 
+             * 
+             * */
+
+            /*
+             * ta dando pau nas ultimas contas, e também não está escrevendo o primeiro número da expressão
+             * 
+             * 
+             */
+            if (operandos.Length >= 5) {
+                string[] operandosNovos = new string[operandos.Length];
+                for (int i = 2; i < operandos.Length; i++) {
+                    operandosNovos[i] = operandos[i];
+                }
+                //Array.Resize(ref operandosNovos, operandosNovos.Length - 3);
+                operandosNovos = operandosNovos.Where(x => x != null).ToArray();
+                GerarCodigo(operandosNovos, arquivo);
+            }
+
+            if (operandos.Length == 3) {
+                switch (operandos[1]) {
+                    case "+":
+                        arquivo.EscreverSomaSimples(operandos[0], operandos[2], false);
+                        break;
+                    case "-":
+                        arquivo.EscreverSubSimples(operandos[0], operandos[2], false);
+                        break;
+                    case "*":
+                        arquivo.EscreverMultiplicacaoSimples(operandos[0], operandos[2], false);
+                        break;
+                }
+            }
+            else {
+                switch (operandos[1]) {
+                    case "+":
+                        arquivo.EscreverSomaSimples(operandos[0], operandos[2], true);
+                        break;
+                    case "-":
+                        arquivo.EscreverSubSimples(operandos[0], operandos[2], true);
+                        break;
+                    case "*":
+                        arquivo.EscreverMultiplicacaoSimples(operandos[0], operandos[2], true);
+                        break;
+                }
+            }
+
+            /*
+            int posOffset = 0;
+            for (int i = 0; i < operandos.Length; i += 3) {
+                switch (operandos[1 + posOffset]) {
+                    case "+":
+                        arquivo.EscreverSomaSimples(operandos[0 + posOffset], operandos[2 + posOffset], posOffset != 0);
+                        break;
+                    case "-":
+                        arquivo.EscreverSubSimples(operandos[0 + posOffset], operandos[2 + posOffset], posOffset != 0);
+                        break;
+                    case "*":
+                        arquivo.EscreverMultiplicacaoSimples(operandos[0 + posOffset], operandos[2 + posOffset], posOffset != 0);
+                        break;
+                }
+
+                posOffset += 2;
+            }
+            */
+
+        }
     }
 }

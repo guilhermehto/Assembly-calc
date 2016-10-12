@@ -104,16 +104,14 @@ namespace TrabalhoArqI.Helpers {
         }
 
 
-        public void EscreverMultiplicacaoSimples(string esquerda, string direita, bool resultado)
-        {
-            if (!resultado)
-            {
+        public void EscreverMultiplicacaoSimples(string esquerda, string direita, bool resultado) {
+            //10*10
+            if (!resultado) {
                 ArquivoCodigo.WriteLine("#parte da multiplicacao");
                 ArquivoCodigo.WriteLine("li $s5," + esquerda);
                 ArquivoCodigo.WriteLine("li $s4,0");
                 //ArquivoCodigo.WriteLine("li $s6," + direita);
-                for (int i = 0; i < int.Parse(direita); i++)
-                {
+                for (int i = 0; i < int.Parse(direita); i++) {
                     ArquivoCodigo.WriteLine("add $s4,$s4,$s5");
                     //ArquivoCodigo.WriteLine("add " + Contrato.Resultado + "," + Contrato.Resultado + ",$s3");
                 }
@@ -121,9 +119,12 @@ namespace TrabalhoArqI.Helpers {
                 ArquivoCodigo.WriteLine("add " + Contrato.Resultado + "," + Contrato.Resultado + ",$s4");
                 ArquivoCodigo.WriteLine("#fim da multiplicacao");
             }
+            //(10*10) -> Resultado *10
             else {
-                ArquivoCodigo.WriteLine("li $s1," + direita);
-                ArquivoCodigo.WriteLine("sub " + Contrato.Resultado + "," + Contrato.Resultado + ",$s1");
+                for (int i = 1; i < int.Parse(direita); i++) {
+                    ArquivoCodigo.WriteLine("add $s4," + "$s4," + Contrato.Resultado);
+                }
+                ArquivoCodigo.WriteLine("move " + Contrato.Resultado + ",$s4");
             }
         }
     }
