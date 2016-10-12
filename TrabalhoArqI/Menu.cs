@@ -15,7 +15,8 @@ namespace TrabalhoArqI {
         private Arquivo arquivo;
         public Menu() {
             InitializeComponent();
-            arquivo = new Arquivo("C:/CodigoNovoNovo.txt");
+            //arquivo = new Arquivo("C:/CodigoNovoNovo.txt");
+            arquivo = new Arquivo("C:/Users/renan/Desktop/Aulas/Arquitetura de Computadores I/CodigoNovo.asm");
         }
 
         private void btnGerarAssembly_Click(object sender, EventArgs e) {
@@ -33,6 +34,12 @@ namespace TrabalhoArqI {
                         break;
                     case "-":
                         arquivo.EscreverSubSimples(operandos[0 + posOffset], operandos[2 + posOffset], posOffset != 0);
+                        break;
+                    case "*":
+                        //TODO escrever Multiplicação
+                        //arquivo.EscreverSomaSimples(operandos[0 + posOffset], operandos[2 + posOffset], posOffset != 0);
+                        arquivo.EscreverMultiplicacaoSimples(operandos[0 + posOffset], operandos[2 + posOffset], posOffset != 0);
+                        
                         break;
                 }
 

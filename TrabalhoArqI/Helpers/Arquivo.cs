@@ -102,5 +102,29 @@ namespace TrabalhoArqI.Helpers {
                 ArquivoCodigo.WriteLine("sub " + Contrato.Resultado + "," + Contrato.Resultado + ",$s1");
             }
         }
+
+
+        public void EscreverMultiplicacaoSimples(string esquerda, string direita, bool resultado)
+        {
+            if (!resultado)
+            {
+                ArquivoCodigo.WriteLine("#parte da multiplicacao");
+                ArquivoCodigo.WriteLine("li $s5," + esquerda);
+                ArquivoCodigo.WriteLine("li $s4,0");
+                //ArquivoCodigo.WriteLine("li $s6," + direita);
+                for (int i = 0; i < int.Parse(direita); i++)
+                {
+                    ArquivoCodigo.WriteLine("add $s4,$s4,$s5");
+                    //ArquivoCodigo.WriteLine("add " + Contrato.Resultado + "," + Contrato.Resultado + ",$s3");
+                }
+                ArquivoCodigo.WriteLine();
+                ArquivoCodigo.WriteLine("add " + Contrato.Resultado + "," + Contrato.Resultado + ",$s4");
+                ArquivoCodigo.WriteLine("#fim da multiplicacao");
+            }
+            else {
+                ArquivoCodigo.WriteLine("li $s1," + direita);
+                ArquivoCodigo.WriteLine("sub " + Contrato.Resultado + "," + Contrato.Resultado + ",$s1");
+            }
+        }
     }
 }
