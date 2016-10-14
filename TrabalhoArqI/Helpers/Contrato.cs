@@ -12,4 +12,10 @@ namespace TrabalhoArqI.Helpers {
         public const string Resultado = "$a0";
         public const string ResultadoMultiplicacao = "$a1";
     }
+
+    public static class Prioridade {
+        public const int PrioridadeFunc = 2;
+        public const int PrioridadeMult = 1;
+        public const int PrioridadeAdicao = 0;
+    }
 }

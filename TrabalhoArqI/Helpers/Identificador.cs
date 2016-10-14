@@ -88,10 +88,46 @@ namespace TrabalhoArqI.Helpers {
 
 
         public void GerarCodigo(string[] operandos, Arquivo arquivo) {
-            /*
+            /*ResultadoMultiplicacao -> mult
+             * ResultadoDiv -> div
+             * 
+             * Escreve todas as div;
+             * Escreve todas as mult;
+             * Escreve todas as somas/sub;
+             * Soma div e mult no resultado;
+             * 
              * 10 + 5 + 2 + 1
              * 5 + 2 + 1
              * 2 + 1 
+             * 
+             * 10 + 6 / 2 * 3 - 7
+             * 
+             * [1] 0
+             * [3] 1
+             * [5] 1
+             * [7] 0
+             * 
+             * 
+             * 
+             * 
+             * [3] 1
+             * Escreve 6/2 - EscreverDivSimples(false)
+             * 
+             * [1] 0
+             * [5] 1
+             * [7] 0
+             * 
+             * 
+             * [5] 1
+             * Escrever Resultado * 3 - EscreverMultSimples(true)
+             * 
+             * [1] 0
+             * [7] 0 
+             * 
+             * [1] 0
+             * Escrever 10 + Resultado - EscreverSomaSimples(true)
+             * 
+             * 
              * 
              * */
 
@@ -121,18 +157,24 @@ namespace TrabalhoArqI.Helpers {
                     case "*":
                         arquivo.EscreverMultiplicacaoSimples(operandos[0], operandos[2], false);
                         break;
+                    case "/":
+                        arquivo.EscreverDivSimples(operandos[0], operandos[2], false);
+                        break;
                 }
             }
             else {
                 switch (operandos[1]) {
                     case "+":
-                        arquivo.EscreverSomaSimples(operandos[0], operandos[2], true);
+                        arquivo.EscreverSomaSimples(operandos[0], operandos[0], true);
                         break;
                     case "-":
-                        arquivo.EscreverSubSimples(operandos[0], operandos[2], true);
+                        arquivo.EscreverSubSimples(operandos[0], operandos[0], true);
                         break;
                     case "*":
-                        arquivo.EscreverMultiplicacaoSimples(operandos[0], operandos[2], true);
+                        arquivo.EscreverMultiplicacaoSimples(operandos[0], operandos[0], true);
+                        break;
+                    case "/":
+                        arquivo.EscreverDivSimples(operandos[0], operandos[0], true);
                         break;
                 }
             }
@@ -157,5 +199,93 @@ namespace TrabalhoArqI.Helpers {
             */
 
         }
+
+        /*
+         10 + |6 / 2| * 3| - |8 / 2| - |10 / 2| + |4 / 4|
+         Quando identificar um parenteses, incrementar a prioridade de cada operando dentro dele em 1(para cada parenteses) ex: ((2+2) * 1) * 3
+             
+             */
+
+        public void EscreverCodigoRenan(string[] operandos, Arquivo arquivo) {
+            var dicionario = GetDicionario(operandos);
+            bool escreverEmResultado = false;
+            var ultOpPos = 0;
+            for (int i = Prioridade.PrioridadeFunc; i >= 0; i--) {
+                foreach (var dic in dicionario) {
+                    if (dic.Value == i) {
+                        var pos1 = dic.Key - 1;
+                        var pos2 = dic.Key + 1;
+                        switch (operandos[dic.Key]) {
+                            case "+":
+                                if (ultOpPos < dic.Key) {
+                                    arquivo.EscreverSomaSimples(operandos[pos1], operandos[pos2], escreverEmResultado);
+                                } else {
+                                    arquivo.EscreverSomaSimples(operandos[pos2], operandos[pos1], escreverEmResultado);
+                                }
+                                escreverEmResultado = true;
+                                ultOpPos = dic.Key;
+                                break;
+                            case "-":
+                                if (ultOpPos < dic.Key) {
+                                    arquivo.EscreverSubSimples(operandos[pos1], operandos[pos2], escreverEmResultado);
+                                } else {
+                                    arquivo.EscreverSubSimples(operandos[pos2], operandos[pos1], escreverEmResultado);
+                                }
+                                escreverEmResultado = true;
+                                ultOpPos = dic.Key;
+                                break;
+                            case "*":
+                                if (ultOpPos < dic.Key) {
+                                    arquivo.EscreverMultiplicacaoSimples(operandos[pos1], operandos[pos2], escreverEmResultado);
+                                } else {
+                                    arquivo.EscreverMultiplicacaoSimples(operandos[pos2], operandos[pos1], escreverEmResultado);
+                                }
+                                escreverEmResultado = true;
+                                ultOpPos = dic.Key;
+                                break;
+                            case "/":
+                                if (ultOpPos > dic.Key) {
+                                    arquivo.EscreverDivSimples(operandos[pos1], operandos[pos2], escreverEmResultado);
+                                }
+                                else {
+                                    arquivo.EscreverDivSimples(operandos[pos2], operandos[pos1], escreverEmResultado);
+                                }
+                                escreverEmResultado = true;
+                                ultOpPos = dic.Key;
+                                break;
+                        }
+                    }
+                }
+            }
+
+
+
+        }
+
+
+        private Dictionary<int, int> GetDicionario(string[] operandos) {
+            Dictionary<int,int> dicionario = new Dictionary<int, int>();
+
+            for (int i = 1; i < operandos.Length; i += 2) {
+                switch (operandos[i]) {
+                    case "+":
+                        dicionario.Add(i, Prioridade.PrioridadeAdicao);
+                        break;
+                    case "-":
+                        dicionario.Add(i, Prioridade.PrioridadeAdicao);
+                        break;
+                    case "*":
+                        dicionario.Add(i, Prioridade.PrioridadeMult);
+                        break;
+                    case "/":
+                        dicionario.Add(i, Prioridade.PrioridadeMult);
+                        break;
+                }
+            }
+
+            return dicionario;
+
+        }
+
     }
 }

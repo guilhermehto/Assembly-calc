@@ -27,8 +27,53 @@ namespace TrabalhoArqI {
             //Coloca em um vetor todos os números separados das operações
             //TODO: Identificar operações fib, etc..
             var operandos = identificador.IdentificarOperandos(calculo);
+            //operandos = operandos.Reverse().ToArray();
 
-            identificador.GerarCodigo(operandos, arquivo);
+            /*var operandosEmOrdem = new string[operandos.Length];
+            var indexSig = 0;
+            var indexMenos = operandos.Length-1;
+            for (int i = 0; i < operandos.Length; i++) {
+                switch (operandos[i + 1]) {
+                    case "+":
+                        operandosEmOrdem[indexMenos] = operandos[i];
+                        operandosEmOrdem[indexMenos] = "+";
+                        operandosEmOrdem[indexMenos] = operandos[i + 2];
+
+                        indexMenos -= 3;
+                        break;
+
+                    case "-":
+                        operandosEmOrdem[indexMenos] = operandos[i];
+                        operandosEmOrdem[indexMenos] = "";
+                        operandosEmOrdem[indexMenos] = operandos[i + 2];
+
+                        indexMenos -= 3;
+                        break;
+
+                    case "*":
+                        operandosEmOrdem[indexSig] = operandos[i];
+                        operandosEmOrdem[indexSig + 1] = "*";
+                        operandosEmOrdem[indexSig +2] = operandos[i+2];
+
+                        indexSig += 3;
+                        break;
+
+                    case "/":
+                        operandosEmOrdem[indexSig] = operandos[i];
+                        operandosEmOrdem[indexSig + 1] = "/";
+                        operandosEmOrdem[indexSig + 2] = operandos[i + 2];
+
+                        indexSig += 3;
+                        break;
+                }
+            }
+            Debug.Write(operandosEmOrdem);
+
+            */
+
+            identificador.EscreverCodigoRenan(operandos, arquivo);
+
+
 
 
 

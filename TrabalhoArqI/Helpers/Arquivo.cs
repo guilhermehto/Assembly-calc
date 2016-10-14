@@ -121,10 +121,22 @@ namespace TrabalhoArqI.Helpers {
             }
             //(10*10) -> Resultado *10
             else {
-                for (int i = 1; i < int.Parse(direita); i++) {
+                for (int i = 0; i < int.Parse(direita); i++) {
                     ArquivoCodigo.WriteLine("add $s4," + "$s4," + Contrato.Resultado);
                 }
                 ArquivoCodigo.WriteLine("move " + Contrato.Resultado + ",$s4");
+            }
+        }
+
+        public void EscreverDivSimples(string s, string s1, bool resultado) {
+            if (!resultado) {
+                ArquivoCodigo.WriteLine("li $s0," + s);
+                ArquivoCodigo.WriteLine("li $s1," + s1);
+                ArquivoCodigo.WriteLine("div $s2 $s1,$s0");
+                ArquivoCodigo.WriteLine("move " + Contrato.Resultado + ",$s2");
+            } else {
+                ArquivoCodigo.WriteLine("li $s1," + s1);
+                ArquivoCodigo.WriteLine("div " + Contrato.Resultado + "," + Contrato.Resultado + ",$s1");
             }
         }
     }
