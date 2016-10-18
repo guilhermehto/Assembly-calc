@@ -9,11 +9,13 @@ namespace TrabalhoArqI.Helpers {
     /// Usada para identificar as operações na string do cálculo
     /// </summary>
     class Identificador {
+
+        // Identifica e separa os operandos e os operadores
         public string[] IdentificarOperandos(string calculo) {
-            //calculo = calculo.Where(x => !String.IsNullOrWhiteSpace(x.ToString())).ToString();    
+            
             string[] operandos = new string[calculo.Length];
             int i = 0;
-            //TODO: Tratar erro caso um operador estiver no começo do cálculo
+            
             foreach (char s in calculo) {
                 switch (s.ToString()) {
                     case "+":
@@ -41,150 +43,40 @@ namespace TrabalhoArqI.Helpers {
                         break;
                 }
             }
-
             return operandos.Where(x => x != null).ToArray();
         }
 
 
-        public string[] IdentificarSoma(string[] calculo) {
-            string[] nums = new string[calculo.Length];
-            int posNums = 0;
-            for (int i = 0; i < calculo.Length; i++) {
-                if (calculo[i] == "+") {
-                    if (posNums != 0) {
-                        nums[posNums] = calculo[i + 1];
-                        posNums++;
-                    }
-                    else {
-                        nums[posNums] = calculo[i - 1];
-                        nums[posNums + 1] = calculo[i + 1];
-                        posNums += 2;
-                    }
-                }
-            }
-
-            return nums.Where(x => x != null).ToArray();
-        }
-        public string[] IdentificarSubtracao(string[] calculo) {
-            string[] nums = new string[calculo.Length];
-            int posNums = 0;
-            for (int i = 0; i < calculo.Length; i++) {
-                if (calculo[i] == "-") {
-                    if (posNums != 0) {
-                        nums[posNums] = calculo[i + 1];
-                        posNums++;
-                    }
-                    else {
-                        nums[posNums] = calculo[i - 1];
-                        nums[posNums + 1] = calculo[i + 1];
-                        posNums += 2;
-                    }
-                }
-            }
-
-            return nums.Where(x => x != null).ToArray();
-        }
-
-
-
-        public void GerarCodigo(string[] operandos, Arquivo arquivo) {
-            
-            if (operandos.Length >= 5) {
-                string[] operandosNovos = new string[operandos.Length];
-                for (int i = 2; i < operandos.Length; i++) {
-                    operandosNovos[i] = operandos[i];
-                }
-                //Array.Resize(ref operandosNovos, operandosNovos.Length - 3);
-                operandosNovos = operandosNovos.Where(x => x != null).ToArray();
-                GerarCodigo(operandosNovos, arquivo);
-            }
-
-            if (operandos.Length == 3) {
-                switch (operandos[1]) {
-                    case "+":
-                        arquivo.EscreverSomaSimples(operandos[0], operandos[2], false);
-                        break;
-                    case "-":
-                        arquivo.EscreverSubSimples(operandos[0], operandos[2], false);
-                        break;
-                    case "*":
-                        arquivo.EscreverMultiplicacaoSimples(operandos[0], operandos[2], false);
-                        break;
-                    case "/":
-                        arquivo.EscreverDivSimples(operandos[0], operandos[2], false);
-                        break;
-                }
-            }
-            else {
-                switch (operandos[1]) {
-                    case "+":
-                        arquivo.EscreverSomaSimples(operandos[0], operandos[0], true);
-                        break;
-                    case "-":
-                        arquivo.EscreverSubSimples(operandos[0], operandos[0], true);
-                        break;
-                    case "*":
-                        arquivo.EscreverMultiplicacaoSimples(operandos[0], operandos[0], true);
-                        break;
-                    case "/":
-                        arquivo.EscreverDivSimples(operandos[0], operandos[0], true);
-                        break;
-                }
-            }
-
-            /*
-            int posOffset = 0;
-            for (int i = 0; i < operandos.Length; i += 3) {
-                switch (operandos[1 + posOffset]) {
-                    case "+":
-                        arquivo.EscreverSomaSimples(operandos[0 + posOffset], operandos[2 + posOffset], posOffset != 0);
-                        break;
-                    case "-":
-                        arquivo.EscreverSubSimples(operandos[0 + posOffset], operandos[2 + posOffset], posOffset != 0);
-                        break;
-                    case "*":
-                        arquivo.EscreverMultiplicacaoSimples(operandos[0 + posOffset], operandos[2 + posOffset], posOffset != 0);
-                        break;
-                }
-
-                posOffset += 2;
-            }
-            */
-
-        }
-
-        /*
-         10 + |6 / 2| * 3| - |8 / 2| - |10 / 2| + |4 / 4|
-         Quando identificar um parenteses, incrementar a prioridade de cada operando dentro dele em 1(para cada parenteses) ex: ((2+2) * 1) * 3
-             
-             */
-
-        public void EscreverCodigoRenan(string[] operandos, Arquivo arquivo) {
-            var dicionario = GetDicionario(operandos);
+        public void EscreverCodigo(string[] operandos, Arquivo arquivo) {
+            var dicionario = GetDicionario(operandos); // Dicionário que é utilizado para relacionar a posição do operando com sua prioridade (Chave-Valor)
             bool escreverEmResultado = false;
-            var ultOpPos = 0;
-            for (int i = Prioridade.PrioridadeFunc; i >= 0; i--) {
-                foreach (var dic in dicionario) {
-                    if (dic.Value == i) {
-                        var pos1 = dic.Key - 1;
-                        var pos2 = dic.Key + 1;
+            var ultOpPos = 0; // A posição da ultima operação
+            for (int i = Prioridade.PrioridadeFunc; i >= 0; i--) { // Para cada prioridade
+                foreach (var dic in dicionario) { // Para cada relação no dicionário
+                    if (dic.Value == i) { // Se o valor for igual à prioridade em questão
+                        var pos1 = dic.Key - 1; // operando à esquerda
+                        var pos2 = dic.Key + 1; // operando à direita
                         switch (operandos[dic.Key]) {
-                            case "+":
+                            case "+": 
+                                // Soma
                                 arquivo.EscreverSomaSimples(operandos[pos1], operandos[pos2], escreverEmResultado);
                                 escreverEmResultado = true;
                                 ultOpPos = dic.Key;
                                 break;
-                            case "-":
+                            case "-": 
+                                // Subtração
                                 arquivo.EscreverSubSimples(operandos[pos1], operandos[pos2], escreverEmResultado);
                                 escreverEmResultado = true;
                                 ultOpPos = dic.Key;
                                 break;
                             case "*":
+                                //Multiplicação
                                 arquivo.EscreverMultiplicacaoSimples(operandos[pos1], operandos[pos2], escreverEmResultado);
                                 escreverEmResultado = true;
                                 ultOpPos = dic.Key;
                                 break;
                             case "/":
+                                //Divisão
                                 arquivo.EscreverDivSimples(operandos[pos1], operandos[pos2], escreverEmResultado);
                                 escreverEmResultado = true;
                                 ultOpPos = dic.Key;
@@ -193,12 +85,9 @@ namespace TrabalhoArqI.Helpers {
                     }
                 }
             }
-
-
-
         }
 
-
+        //Método que cria o dicionário e de acordo com a operação, associa uma prioridade
         private Dictionary<int, int> GetDicionario(string[] operandos) {
             Dictionary<int,int> dicionario = new Dictionary<int, int>();
 
@@ -219,9 +108,7 @@ namespace TrabalhoArqI.Helpers {
                 }
             }
 
-
             return dicionario;
-
         }
 
     }

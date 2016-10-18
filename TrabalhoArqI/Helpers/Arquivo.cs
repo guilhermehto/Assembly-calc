@@ -16,13 +16,13 @@ namespace TrabalhoArqI.Helpers {
         private string Caminho;
 
         private void AbrirArquivo() {
-            ArquivoCodigo = new StreamWriter(Caminho);
+            ArquivoCodigo = new StreamWriter(Caminho); 
         }
         public void FecharArquivo() {
             ArquivoCodigo.Close();
         }
 
-        public Arquivo(string caminho) {
+        public Arquivo(string caminho) { // Abre o arquivo e já escreve linhas necessárias
             Caminho = caminho;
             AbrirArquivo();
             ArquivoCodigo.WriteLine("main:");
@@ -66,14 +66,7 @@ namespace TrabalhoArqI.Helpers {
 
                 pos++;
             }
-
-
-            /*i = 1;
-            foreach (var operando in operandos) {
-                ArquivoCodigo.WriteLine("sub " + Contrato.Resultado + "," + Contrato.Resultado + ",$s" + i);
-                i++;
-            }*/
-
+            
         }
 
         //A Bool resultado é usada para saber se devemos aplicar a operação ao resultado geral da expressão
@@ -89,7 +82,7 @@ namespace TrabalhoArqI.Helpers {
             }
         }
 
-        //A Bool resultado é usada para saber se devemos aplicar a operação ao resultado geral da expressão
+        
         public void EscreverSubSimples(string s, string s1, bool resultado) {
             if (!resultado) {
                 ArquivoCodigo.WriteLine("li $s0," + s);
@@ -105,7 +98,7 @@ namespace TrabalhoArqI.Helpers {
 
 
         public void EscreverMultiplicacaoSimples(string esquerda, string direita, bool resultado) {
-            //10*10
+            //Método de multiplicação por somas sucessivas
             if (!resultado) {
                 ArquivoCodigo.WriteLine("#parte da multiplicacao");
                 ArquivoCodigo.WriteLine("li $s5," + esquerda);
@@ -119,7 +112,6 @@ namespace TrabalhoArqI.Helpers {
                 ArquivoCodigo.WriteLine("add " + Contrato.Resultado + "," + Contrato.Resultado + ",$s4");
                 ArquivoCodigo.WriteLine("#fim da multiplicacao");
             }
-            //(10*10) -> Resultado *10
             else {
                 ArquivoCodigo.WriteLine("li $s4,0");
                 for (int i = 0; i < int.Parse(direita); i++) {
