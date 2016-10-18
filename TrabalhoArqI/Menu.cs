@@ -20,7 +20,10 @@ namespace TrabalhoArqI {
         }
 
         private void btnGerarAssembly_Click(object sender, EventArgs e) {
-            arquivo = new Arquivo("C:/CodigoNovoNovo.txt");
+
+            string caminho = txtCaminho.Text.Replace(@"\", @"/") + @"\CodigoAssembly.asm";
+            
+            arquivo = new Arquivo(caminho);
 
             string calculo = txtCalculo.Text;
 
