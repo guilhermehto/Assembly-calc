@@ -110,8 +110,8 @@ namespace TrabalhoArqI.Helpers {
                 ArquivoCodigo.WriteLine("#parte da multiplicacao");
                 ArquivoCodigo.WriteLine("li $s5," + esquerda);
                 ArquivoCodigo.WriteLine("li $s4,0");
-                //ArquivoCodigo.WriteLine("li $s6," + direita);
-                for (int i = 0; i < int.Parse(direita); i++) {
+                ArquivoCodigo.WriteLine("li $s5," + direita);
+                for (int i = 0; i < int.Parse(esquerda); i++) {
                     ArquivoCodigo.WriteLine("add $s4,$s4,$s5");
                     //ArquivoCodigo.WriteLine("add " + Contrato.Resultado + "," + Contrato.Resultado + ",$s3");
                 }
@@ -121,6 +121,7 @@ namespace TrabalhoArqI.Helpers {
             }
             //(10*10) -> Resultado *10
             else {
+                ArquivoCodigo.WriteLine("li $s4,0");
                 for (int i = 0; i < int.Parse(direita); i++) {
                     ArquivoCodigo.WriteLine("add $s4," + "$s4," + Contrato.Resultado);
                 }

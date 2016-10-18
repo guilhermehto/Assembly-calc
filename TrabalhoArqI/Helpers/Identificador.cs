@@ -88,54 +88,7 @@ namespace TrabalhoArqI.Helpers {
 
 
         public void GerarCodigo(string[] operandos, Arquivo arquivo) {
-            /*ResultadoMultiplicacao -> mult
-             * ResultadoDiv -> div
-             * 
-             * Escreve todas as div;
-             * Escreve todas as mult;
-             * Escreve todas as somas/sub;
-             * Soma div e mult no resultado;
-             * 
-             * 10 + 5 + 2 + 1
-             * 5 + 2 + 1
-             * 2 + 1 
-             * 
-             * 10 + 6 / 2 * 3 - 7
-             * 
-             * [1] 0
-             * [3] 1
-             * [5] 1
-             * [7] 0
-             * 
-             * 
-             * 
-             * 
-             * [3] 1
-             * Escreve 6/2 - EscreverDivSimples(false)
-             * 
-             * [1] 0
-             * [5] 1
-             * [7] 0
-             * 
-             * 
-             * [5] 1
-             * Escrever Resultado * 3 - EscreverMultSimples(true)
-             * 
-             * [1] 0
-             * [7] 0 
-             * 
-             * [1] 0
-             * Escrever 10 + Resultado - EscreverSomaSimples(true)
-             * 
-             * 
-             * 
-             * */
-
-            /*
-             * ta dando pau nas ultimas contas, e também não está escrevendo o primeiro número da expressão
-             * 
-             * 
-             */
+            
             if (operandos.Length >= 5) {
                 string[] operandosNovos = new string[operandos.Length];
                 for (int i = 2; i < operandos.Length; i++) {
@@ -217,39 +170,22 @@ namespace TrabalhoArqI.Helpers {
                         var pos2 = dic.Key + 1;
                         switch (operandos[dic.Key]) {
                             case "+":
-                                if (ultOpPos < dic.Key) {
-                                    arquivo.EscreverSomaSimples(operandos[pos1], operandos[pos2], escreverEmResultado);
-                                } else {
-                                    arquivo.EscreverSomaSimples(operandos[pos2], operandos[pos1], escreverEmResultado);
-                                }
+                                arquivo.EscreverSomaSimples(operandos[pos1], operandos[pos2], escreverEmResultado);
                                 escreverEmResultado = true;
                                 ultOpPos = dic.Key;
                                 break;
                             case "-":
-                                if (ultOpPos < dic.Key) {
-                                    arquivo.EscreverSubSimples(operandos[pos1], operandos[pos2], escreverEmResultado);
-                                } else {
-                                    arquivo.EscreverSubSimples(operandos[pos2], operandos[pos1], escreverEmResultado);
-                                }
+                                arquivo.EscreverSubSimples(operandos[pos1], operandos[pos2], escreverEmResultado);
                                 escreverEmResultado = true;
                                 ultOpPos = dic.Key;
                                 break;
                             case "*":
-                                if (ultOpPos < dic.Key) {
-                                    arquivo.EscreverMultiplicacaoSimples(operandos[pos1], operandos[pos2], escreverEmResultado);
-                                } else {
-                                    arquivo.EscreverMultiplicacaoSimples(operandos[pos2], operandos[pos1], escreverEmResultado);
-                                }
+                                arquivo.EscreverMultiplicacaoSimples(operandos[pos1], operandos[pos2], escreverEmResultado);
                                 escreverEmResultado = true;
                                 ultOpPos = dic.Key;
                                 break;
                             case "/":
-                                if (ultOpPos > dic.Key) {
-                                    arquivo.EscreverDivSimples(operandos[pos1], operandos[pos2], escreverEmResultado);
-                                }
-                                else {
-                                    arquivo.EscreverDivSimples(operandos[pos2], operandos[pos1], escreverEmResultado);
-                                }
+                                arquivo.EscreverDivSimples(operandos[pos1], operandos[pos2], escreverEmResultado);
                                 escreverEmResultado = true;
                                 ultOpPos = dic.Key;
                                 break;
@@ -282,6 +218,7 @@ namespace TrabalhoArqI.Helpers {
                         break;
                 }
             }
+
 
             return dicionario;
 
